@@ -6,7 +6,8 @@ Features:
 
 - TextVQA: OCR input, image input, question input, and answer prediction and answer groundtruth output
 - TextCaps: OCR input, image input, caption prediction and caption groundtruth output
-- Random select with index binding and index slider
+- Random select with index binding
+- Select with index slider
 - Select split and different ocr prompt subfolder
 
 Usage:
