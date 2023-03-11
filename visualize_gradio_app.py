@@ -179,4 +179,5 @@ def launch_gradio_app():
     demo.launch(share=True)
 
 if __name__ == '__main__':
-    launch_gradio_app()
+    _, _, public_link = launch_gradio_app()
+    print(f"=> public_link: {public_link}")
