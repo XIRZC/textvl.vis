@@ -13,7 +13,7 @@ def textvqa_tab_context():
 
     textvqa_dropdown_list.extend([textvqa_vis_blip2_withoutocr_files_list, \
          textvqa_vis_blip2_withocr_files_list, textvqa_vis_m4c_files_list])
-    textvqa_dropdown_list_default.extend([1, 5, 0])
+    textvqa_dropdown_list_default.extend([1, 9, 0])
 
     textvqa_template_contrasts_list = []
     textvqa_prediction_contrasts_list = []

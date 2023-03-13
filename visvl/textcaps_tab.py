@@ -13,7 +13,7 @@ def textcaps_tab_context():
 
     textcaps_dropdown_list.extend([textcaps_vis_blip2_withoutocr_files_list, \
          textcaps_vis_blip2_withocr_files_list, textcaps_vis_m4c_files_list])
-    textcaps_dropdown_list_default.extend([0, 10, 0])
+    textcaps_dropdown_list_default.extend([0, 13, 0])
 
     textcaps_template_contrasts_list = []
     textcaps_prediction_contrasts_list = []
