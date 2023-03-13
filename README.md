@@ -9,6 +9,7 @@ Features:
 - Random select with index binding
 - Select with index slider
 - Select split and different ocr prompt subfolder
+- two or three different prompt contrast
 
 Usage:
 
