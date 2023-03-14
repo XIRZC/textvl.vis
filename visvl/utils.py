@@ -4,7 +4,9 @@ import random
 from .consts import *
 
 def get_file_list(root_path):
-    return sorted(list(set(['/'.join(str(item).split('/')[-3:-1]) for item in Path(root_path).glob('**/*') if item.is_file()])))
+    separator = '\\' if OS == 'Windows' else '/'
+    file_list = sorted(list(set([separator.join(str(item).split(separator)[-3:-1]) for item in Path(root_path).resolve().glob('**/*') if item.is_file()])))
+    return file_list
 
 def dict_list2dict_dict(dict_list, key_name):
     dict_dict = dict()
@@ -16,7 +18,7 @@ def dict_list2dict_dict(dict_list, key_name):
 
 def load_anno_textvl_ocr(split):
 
-    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT)/f"TextVQA_Rosetta_OCR_v0.2_{split}.json"
+    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_Rosetta_OCR_v0.2_{split}.json"
 
     textvl_ocr_data = json.load(textvl_ocr_file_path.open())['data']
     textvl_ocr_data_dict = dict_list2dict_dict(textvl_ocr_data, 'image_id')
@@ -25,7 +27,7 @@ def load_anno_textvl_ocr(split):
 
 def load_anno_textvqa(textvqa_sample_split):
 
-    textvqa_anno_file_path = Path(TEXTVQA_ANNOTATION_ROOT)/f"TextVQA_0.5.1_{textvqa_sample_split}.json"
+    textvqa_anno_file_path = Path(TEXTVQA_ANNOTATION_ROOT).resolve()/f"TextVQA_0.5.1_{textvqa_sample_split}.json"
 
     textvqa_anno_data = json.load(textvqa_anno_file_path.open())['data']
     textvqa_anno_data_dict = dict_list2dict_dict(textvqa_anno_data, 'question_id')
@@ -34,7 +36,7 @@ def load_anno_textvqa(textvqa_sample_split):
 
 def load_anno_textcaps(textcaps_sample_split):
 
-    textcaps_anno_file_path = Path(TEXTCAPS_ANNOTATION_ROOT)/f"TextCaps_0.1_{textcaps_sample_split}.json"
+    textcaps_anno_file_path = Path(TEXTCAPS_ANNOTATION_ROOT).resolve()/f"TextCaps_0.1_{textcaps_sample_split}.json"
 
     textcaps_anno_data = json.load(textcaps_anno_file_path.open())['data']
     textcaps_anno_data_dict = dict_list2dict_dict(textcaps_anno_data, 'image_id')
@@ -45,14 +47,14 @@ textcaps_anno_list = dict()
 textvqa_anno_list = dict()
 textvl_ocr_anno_list = dict()
 for split in ['val', 'test']:
-    textcaps_anno_list[split] = load_anno_textcaps(split)
     textvqa_anno_list[split] = load_anno_textvqa(split)
+    textcaps_anno_list[split] = load_anno_textcaps(split)
     textvl_ocr_anno_list[split] = load_anno_textvl_ocr(split)
 
 
 def load_samples_textvqa(textvqa_sample_split, textvqa_prompt_vis_subdir):
 
-    textvqa_vis_file_path = Path(TEXTVQA_VIS_ROOT)/textvqa_prompt_vis_subdir/f"{textvqa_sample_split}_vqa_result.json"
+    textvqa_vis_file_path = Path(TEXTVQA_VIS_ROOT).resolve()/textvqa_prompt_vis_subdir/f"{textvqa_sample_split}_vqa_result.json"
 
     textvqa_samples_data = json.load(textvqa_vis_file_path.open())
 
@@ -60,7 +62,7 @@ def load_samples_textvqa(textvqa_sample_split, textvqa_prompt_vis_subdir):
 
 def load_samples_textcaps(textcaps_sample_split, textcaps_prompt_vis_subdir):
 
-    textcaps_vis_file_path = Path(TEXTCAPS_VIS_ROOT)/textcaps_prompt_vis_subdir/f"{textcaps_sample_split}_epochbest.json"
+    textcaps_vis_file_path = Path(TEXTCAPS_VIS_ROOT).resolve()/textcaps_prompt_vis_subdir/f"{textcaps_sample_split}_epochbest.json"
 
     textcaps_samples_data = json.load(textcaps_vis_file_path.open())
 
@@ -86,7 +88,7 @@ def get_sample_textvqa(split, index, *subdirs):
             answer_output_gt = 'No GroundTruth for test split !!!'
         ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
         image_split = 'trainval' if split == 'val' else 'test'
-        image_input = Path(TEXTVL_IMAGE_ROOT)/image_split/f"{image_id}.jpg"
+        image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
     
     return [str(image_input), ocr_input, question_input, answer_output_gt, *answer_output_pred_list]
 
@@ -108,7 +110,7 @@ def get_sample_textcaps(split, index, *subdirs):
             caption_output_gt = 'No GroundTruth for test split !!!'
         ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
         image_split = 'trainval' if split == 'val' else 'test'
-        image_input = Path(TEXTVL_IMAGE_ROOT)/image_split/f"{image_id}.jpg"
+        image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
 
     return [str(image_input), ocr_input, caption_output_gt, *caption_output_pred_list]
 

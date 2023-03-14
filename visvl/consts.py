@@ -1,6 +1,9 @@
+import platform
+
 # CONSTANT DEFINITION
 NUM_CONTRAST = 2 # WithOCR, WithoutOCR, M4C/TAP
-VIS_ROOT = '/home/mrxir/Codes/textvl.vis'
+OS = platform.system() # Windows or Linux
+VIS_ROOT = '.'
 TEXTVQA_VIS_ROOT = f"{VIS_ROOT}/textvqa"
 TEXTCAPS_VIS_ROOT = f"{VIS_ROOT}/textcaps"
 TEXTVL_IMAGE_ROOT = f"{VIS_ROOT}/TextVL/Images"
