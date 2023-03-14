@@ -14,7 +14,7 @@ def dict_list2dict_dict(dict_list, key_name):
         dict_dict[item[key_name]] = item
     return dict_dict
 
-def load_data_textvl_ocr(split):
+def load_anno_textvl_ocr(split):
 
     textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT)/f"TextVQA_Rosetta_OCR_v0.2_{split}.json"
 
@@ -41,6 +41,15 @@ def load_anno_textcaps(textcaps_sample_split):
     
     return textcaps_anno_data_dict
 
+textcaps_anno_list = dict()
+textvqa_anno_list = dict()
+textvl_ocr_anno_list = dict()
+for split in ['val', 'test']:
+    textcaps_anno_list[split] = load_anno_textcaps(split)
+    textvqa_anno_list[split] = load_anno_textvqa(split)
+    textvl_ocr_anno_list[split] = load_anno_textvl_ocr(split)
+
+
 def load_samples_textvqa(textvqa_sample_split, textvqa_prompt_vis_subdir):
 
     textvqa_vis_file_path = Path(TEXTVQA_VIS_ROOT)/textvqa_prompt_vis_subdir/f"{textvqa_sample_split}_vqa_result.json"
@@ -59,8 +68,8 @@ def load_samples_textcaps(textcaps_sample_split, textcaps_prompt_vis_subdir):
 
 def get_sample_textvqa(split, index, *subdirs):
 
-    textvl_ocr_data_dict = load_data_textvl_ocr(split)
-    textvqa_anno_data_dict = load_anno_textvqa(split)
+    textvl_ocr_data_dict = textvl_ocr_anno_list[split]
+    textvqa_anno_data_dict = textvqa_anno_list[split]
     answer_output_pred_list = []
     for subdir in subdirs:
         textvqa_samples_data = load_samples_textvqa(split, subdir)
@@ -83,8 +92,8 @@ def get_sample_textvqa(split, index, *subdirs):
 
 def get_sample_textcaps(split, index, *subdirs):
 
-    textvl_ocr_data_dict = load_data_textvl_ocr(split)
-    textcaps_anno_data_dict = load_anno_textcaps(split)
+    textvl_ocr_data_dict = textvl_ocr_anno_list[split]
+    textcaps_anno_data_dict = textcaps_anno_list[split]
     caption_output_pred_list = []
     for subdir in subdirs:
         textcaps_samples_data = load_samples_textcaps(split, subdir)
