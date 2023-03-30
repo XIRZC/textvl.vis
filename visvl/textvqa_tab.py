@@ -1,6 +1,6 @@
 import re
 import gradio as gr
-from .consts import TEXTVQA_VIS_ROOT, NUM_CONTRAST
+from .consts import TEXTVQA_VIS_ROOT
 from .utils import get_file_list, random_select_textvqa, get_sample_textvqa
 
 def textvqa_tab_context():
@@ -8,19 +8,21 @@ def textvqa_tab_context():
     textvqa_dropdown_list = []
     textvqa_dropdown_list_default = []
     textvqa_vis_files_list = get_file_list(TEXTVQA_VIS_ROOT)
-    # Withoutocr_zeroshot
-    textvqa_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_Without.*/zeroshot.*", item)]
-    # Withocr_zeroshot
-    textvqa_vis_blip2_withocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_With_.*/zeroshot.*", item)]
-    # Withoutocr_fewshot
-    textvqa_vis_blip2_withoutocr_fullshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_Without.*/fullshot.*", item)]
-    # Withocr_fewshot
-    textvqa_vis_blip2_withocr_fullshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_With_.*/fullshot.*", item)]
+    textvqa_pattern_list = [
+        # Withoutocr_zeroshot
+        ("^BLIP2_Without.*/zeroshot.*", 1),
+        # Withocr_zeroshot
+        ("^BLIP2_With_.*/zeroshot.*", 7),
+        # Withoutocr_fewshot
+        ("^BLIP2_Without.*/fullshot.*", 0),
+        # Withocr_fewshot
+        ("^BLIP2_With_.*/fullshot.*", 0),
+    ]
+    NUM_CONTRAST = len(textvqa_pattern_list)
+    for pattern, default_index in textvqa_pattern_list:
+        textvqa_dropdown_list.append([item for item in textvqa_vis_files_list if re.search(pattern, item)])
+        textvqa_dropdown_list_default.append(default_index)
 
-    textvqa_dropdown_list.extend([textvqa_vis_blip2_withoutocr_zeroshot_files_list, \
-         textvqa_vis_blip2_withocr_zeroshot_files_list, textvqa_vis_blip2_withoutocr_fullshot_files_list, \
-            textvqa_vis_blip2_withocr_fullshot_files_list])
-    textvqa_dropdown_list_default.extend([1, 7, 0, 0])
 
     textvqa_template_contrasts_list = []
     textvqa_prediction_contrasts_list = []

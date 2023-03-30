@@ -1,6 +1,6 @@
 import re
 import gradio as gr
-from .consts import TEXTCAPS_VIS_ROOT, NUM_CONTRAST
+from .consts import TEXTCAPS_VIS_ROOT
 from .utils import get_file_list, random_select_textcaps, get_sample_textcaps
 
 def textcaps_tab_context():
@@ -8,19 +8,21 @@ def textcaps_tab_context():
     textcaps_dropdown_list = []
     textcaps_dropdown_list_default = []
     textcaps_vis_files_list = get_file_list(TEXTCAPS_VIS_ROOT)
-    # Withoutocr_zeroshot
-    textcaps_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textcaps_vis_files_list if re.search("^BLIP2_Without.*/zeroshot.*", item)]
-    # Withocr_zeroshot
-    textcaps_vis_blip2_withocr_zeroshot_files_list = [item for item in textcaps_vis_files_list if re.search("^BLIP2_With_.*/zeroshot.*", item)]
-    # Withoutocr_fewshot
-    textcaps_vis_blip2_withoutocr_fullshot_files_list = [item for item in textcaps_vis_files_list if re.search("^BLIP2_Without.*/fullshot.*", item)]
-    # Withocr_fewshot
-    textcaps_vis_blip2_withocr_fullshot_files_list = [item for item in textcaps_vis_files_list if re.search("^BLIP2_With_.*/fullshot.*", item)]
+    textcaps_pattern_list = [
+        # Withoutocr_zeroshot
+        ("^BLIP2_Without.*/zeroshot.*", 1),
+        # Withocr_zeroshot
+        ("^BLIP2_With_.*/zeroshot.*", 7),
+        # Withoutocr_fewshot
+        ("^BLIP2_Without.*/fullshot.*", 0),
+        # Withocr_fewshot
+        ("^BLIP2_With_.*/fullshot.*", 0),
+    ]
+    NUM_CONTRAST = len(textcaps_pattern_list)
+    for pattern, default_index in textcaps_pattern_list:
+        textcaps_dropdown_list.append([item for item in textcaps_vis_files_list if re.search(pattern, item)])
+        textcaps_dropdown_list_default.append(default_index)
 
-    textcaps_dropdown_list.extend([textcaps_vis_blip2_withoutocr_zeroshot_files_list, \
-         textcaps_vis_blip2_withocr_zeroshot_files_list, textcaps_vis_blip2_withoutocr_fullshot_files_list, \
-            textcaps_vis_blip2_withocr_fullshot_files_list])
-    textcaps_dropdown_list_default.extend([0, 13, 0, 0])
 
     textcaps_template_contrasts_list = []
     textcaps_prediction_contrasts_list = []

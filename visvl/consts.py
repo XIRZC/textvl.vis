@@ -1,7 +1,6 @@
 import platform
 
 # CONSTANT DEFINITION
-NUM_CONTRAST = 4 # WithoutOCR_zeroshot, WithOCR_zeroshot, WithoutOCR_fewshot, WithOCR_fewshot
 OS = platform.system() # Windows or Linux
 VIS_ROOT = '.'
 TEXTVQA_VIS_ROOT = f"{VIS_ROOT}/textvqa"
