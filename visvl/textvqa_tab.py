@@ -1,3 +1,4 @@
+import re
 import gradio as gr
 from .consts import TEXTVQA_VIS_ROOT, NUM_CONTRAST
 from .utils import get_file_list, random_select_textvqa, get_sample_textvqa
@@ -7,13 +8,19 @@ def textvqa_tab_context():
     textvqa_dropdown_list = []
     textvqa_dropdown_list_default = []
     textvqa_vis_files_list = get_file_list(TEXTVQA_VIS_ROOT)
-    textvqa_vis_blip2_withocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if item[:11] == 'BLIP2_With_']
-    textvqa_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if item[:26] == 'BLIP2_Without_OCR/zeroshot']
-    textvqa_vis_blip2_withoutocr_fullshot_files_list = [item for item in textvqa_vis_files_list if item[:25] == 'BLIP2_Without_OCR/fewshot']
+    # Withoutocr_zeroshot
+    textvqa_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_Without.*/zeroshot.*", item)]
+    # Withocr_zeroshot
+    textvqa_vis_blip2_withocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_With_.*/zeroshot.*", item)]
+    # Withoutocr_fewshot
+    textvqa_vis_blip2_withoutocr_fullshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_Without.*/fullshot.*", item)]
+    # Withocr_fewshot
+    textvqa_vis_blip2_withocr_fullshot_files_list = [item for item in textvqa_vis_files_list if re.search("^BLIP2_With_.*/fullshot.*", item)]
 
     textvqa_dropdown_list.extend([textvqa_vis_blip2_withoutocr_zeroshot_files_list, \
-         textvqa_vis_blip2_withocr_zeroshot_files_list, textvqa_vis_blip2_withoutocr_fullshot_files_list])
-    textvqa_dropdown_list_default.extend([1, 9, 0])
+         textvqa_vis_blip2_withocr_zeroshot_files_list, textvqa_vis_blip2_withoutocr_fullshot_files_list, \
+            textvqa_vis_blip2_withocr_fullshot_files_list])
+    textvqa_dropdown_list_default.extend([1, 7, 0, 0])
 
     textvqa_template_contrasts_list = []
     textvqa_prediction_contrasts_list = []
