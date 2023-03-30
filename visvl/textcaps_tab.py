@@ -7,12 +7,12 @@ def textcaps_tab_context():
     textcaps_dropdown_list = []
     textcaps_dropdown_list_default = []
     textcaps_vis_files_list = get_file_list(TEXTCAPS_VIS_ROOT)
-    textcaps_vis_blip2_withocr_files_list = [item for item in textcaps_vis_files_list if item[:11] == 'BLIP2_With_']
-    textcaps_vis_blip2_withoutocr_files_list = [item for item in textcaps_vis_files_list if item[:11] == 'BLIP2_Witho']
-    textcaps_vis_m4c_files_list = [item for item in textcaps_vis_files_list if item[:3] == 'M4C']
+    textcaps_vis_blip2_withocr_zeroshot_files_list = [item for item in textcaps_vis_files_list if item[:11] == 'BLIP2_With_']
+    textcaps_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textcaps_vis_files_list if item[:26] == 'BLIP2_Without_OCR/zeroshot']
+    textcaps_vis_blip2_withoutocr_fullshot_files_list = [item for item in textcaps_vis_files_list if item[:25] == 'BLIP2_Without_OCR/fewshot']
 
-    textcaps_dropdown_list.extend([textcaps_vis_blip2_withoutocr_files_list, \
-         textcaps_vis_blip2_withocr_files_list, textcaps_vis_m4c_files_list])
+    textcaps_dropdown_list.extend([textcaps_vis_blip2_withoutocr_zeroshot_files_list, \
+         textcaps_vis_blip2_withocr_zeroshot_files_list, textcaps_vis_blip2_withoutocr_fullshot_files_list])
     textcaps_dropdown_list_default.extend([0, 13, 0])
 
     textcaps_template_contrasts_list = []

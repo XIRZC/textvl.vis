@@ -1,7 +1,7 @@
 import platform
 
 # CONSTANT DEFINITION
-NUM_CONTRAST = 2 # WithOCR, WithoutOCR, M4C/TAP
+NUM_CONTRAST = 3 # WithOCR_zeroshot, WithoutOCR_zeroshot, WithoutOCR_fewshot
 OS = platform.system() # Windows or Linux
 VIS_ROOT = '.'
 TEXTVQA_VIS_ROOT = f"{VIS_ROOT}/textvqa"
@@ -18,5 +18,5 @@ CSS_FORMAT = """
 #textcaps_anno_box {background-color: rgba(37, 190, 45, 0.3)}
 #textcaps_contrast_box1 {background-color: rgba(37, 131, 190, 0.3)}
 #textcaps_contrast_box2 {background-color: rgba(255, 226, 63, 0.3)}
-#textcaps_contrast_box3 {background-color: rgba(190, 37, 56, 0.3}
+#textcaps_contrast_box3 {background-color: rgba(190, 37, 56, 0.3)}
 """

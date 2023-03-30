@@ -11,7 +11,7 @@ def launch_gradio_app():
 
         textcaps_tab_context()
 
-    demo.launch(share=True)
+    demo.launch(server_name='0.0.0.0')
 
 if __name__ == '__main__':
     launch_gradio_app()

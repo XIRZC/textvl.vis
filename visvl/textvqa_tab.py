@@ -7,12 +7,12 @@ def textvqa_tab_context():
     textvqa_dropdown_list = []
     textvqa_dropdown_list_default = []
     textvqa_vis_files_list = get_file_list(TEXTVQA_VIS_ROOT)
-    textvqa_vis_blip2_withocr_files_list = [item for item in textvqa_vis_files_list if item[:11] == 'BLIP2_With_']
-    textvqa_vis_blip2_withoutocr_files_list = [item for item in textvqa_vis_files_list if item[:11] == 'BLIP2_Witho']
-    textvqa_vis_m4c_files_list = [item for item in textvqa_vis_files_list if item[:3] == 'M4C']
+    textvqa_vis_blip2_withocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if item[:11] == 'BLIP2_With_']
+    textvqa_vis_blip2_withoutocr_zeroshot_files_list = [item for item in textvqa_vis_files_list if item[:26] == 'BLIP2_Without_OCR/zeroshot']
+    textvqa_vis_blip2_withoutocr_fullshot_files_list = [item for item in textvqa_vis_files_list if item[:25] == 'BLIP2_Without_OCR/fewshot']
 
-    textvqa_dropdown_list.extend([textvqa_vis_blip2_withoutocr_files_list, \
-         textvqa_vis_blip2_withocr_files_list, textvqa_vis_m4c_files_list])
+    textvqa_dropdown_list.extend([textvqa_vis_blip2_withoutocr_zeroshot_files_list, \
+         textvqa_vis_blip2_withocr_zeroshot_files_list, textvqa_vis_blip2_withoutocr_fullshot_files_list])
     textvqa_dropdown_list_default.extend([1, 9, 0])
 
     textvqa_template_contrasts_list = []
