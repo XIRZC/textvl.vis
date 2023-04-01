@@ -1,0 +1,207 @@
+{
+    "run": {
+        "task": "vqa",
+        "lr_sched": "linear_warmup_cosine_lr",
+        "init_lr": 0.0001,
+        "min_lr": 1e-05,
+        "warmup_lr": 1e-06,
+        "warmup_steps": 2000,
+        "weight_decay": 0.05,
+        "max_epoch": 30,
+        "batch_size_train": 32,
+        "batch_size_eval": 32,
+        "num_workers": 4,
+        "accum_grad_iters": 4,
+        "max_len": 10,
+        "min_len": 1,
+        "num_beams": 5,
+        "inference_method": "generate",
+        "prompt": "Question: {} Short answer:",
+        "seed": 42,
+        "output_dir": "output/BLIP2/textvqa_fewshot_withoutocr_flant5xl_ldf",
+        "amp": false,
+        "resume_ckpt_path": null,
+        "evaluate": false,
+        "report_metric": false,
+        "train_splits": [
+            "train"
+        ],
+        "valid_splits": [
+            "val"
+        ],
+        "test_splits": [
+            "test"
+        ],
+        "device": "cuda",
+        "world_size": 2,
+        "dist_url": "env://",
+        "distributed": true,
+        "rank": 0,
+        "gpu": 0,
+        "dist_backend": "nccl"
+    },
+    "model": {
+        "arch": "blip2_t5",
+        "load_finetuned": false,
+        "pretrained": "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xl.pth",
+        "finetuned": "",
+        "image_size": 224,
+        "drop_path_rate": 0,
+        "use_grad_checkpoint": false,
+        "vit_precision": "fp16",
+        "freeze_vit": true,
+        "num_query_token": 32,
+        "t5_model": "google/flan-t5-xl",
+        "prompt_tuning": true,
+        "num_soft_prompt": 8,
+        "prompt": "Only task Prompt work !!!",
+        "model_type": "ldf_textvqa_flant5xl",
+        "vit_model": "eva_clip_g",
+        "ocr_prepend": false,
+        "ocr_keyword": "photo",
+        "prompt_verbose": false
+    },
+    "preprocess": {
+        "vis_processor": {
+            "train": {
+                "name": "blip_image_train",
+                "image_size": 224
+            },
+            "eval": {
+                "name": "blip_image_eval",
+                "image_size": 224
+            }
+        },
+        "text_processor": {
+            "train": {
+                "name": "blip_question"
+            },
+            "eval": {
+                "name": "blip_question"
+            }
+        }
+    },
+    "datasets": {
+        "text_vqa": {
+            "dataset_card": "dataset_card/text_vqa.md",
+            "data_type": "images",
+            "build_info": {
+                "annotations": {
+                    "train": {
+                        "url": [
+                            "https://www.dropbox.com/s/8x94f20xzr2x5kb/TextVQA_0.5.1_train.json",
+                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_train.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ]
+                    },
+                    "val": {
+                        "url": [
+                            "https://www.dropbox.com/s/fj2dg9p2jiyxp17/TextVQA_0.5.1_val.json",
+                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_val.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ]
+                    },
+                    "test": {
+                        "url": [
+                            "https://www.dropbox.com/s/a34q5ygn7s9l4qm/TextVQA_0.5.1_test.json",
+                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_test.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ]
+                    }
+                },
+                "images": {
+                    "storage": "/data/xzc/Datasets/TextVL/Images/"
+                }
+            },
+            "type": "default",
+            "ocr_prepend": false,
+            "vis_processor": {
+                "train": {
+                    "name": "blip2_image_train",
+                    "image_size": 224
+                },
+                "eval": {
+                    "name": "blip_image_eval",
+                    "image_size": 224
+                }
+            },
+            "text_processor": {
+                "train": {
+                    "name": "blip_question"
+                },
+                "eval": {
+                    "name": "blip_question"
+                }
+            }
+        }
+    }
+}
+{"train_lr": "0.000", "train_loss": "2.537"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 0}
+{"train_lr": "0.000", "train_loss": "2.530"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 1}
+{"train_lr": "0.000", "train_loss": "2.523"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 2}
+{"train_lr": "0.000", "train_loss": "2.523"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 3}
+{"train_lr": "0.000", "train_loss": "2.515"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 4}
+{"train_lr": "0.000", "train_loss": "2.509"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 5}
+{"train_lr": "0.000", "train_loss": "2.511"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 6}
+{"train_lr": "0.000", "train_loss": "2.500"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 7}
+{"train_lr": "0.000", "train_loss": "2.501"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 8}
+{"train_lr": "0.000", "train_loss": "2.496"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 9}
+{"train_lr": "0.000", "train_loss": "2.493"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 10}
+{"train_lr": "0.000", "train_loss": "2.491"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 11}
+{"train_lr": "0.000", "train_loss": "2.485"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 12}
+{"train_lr": "0.000", "train_loss": "2.485"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 13}
+{"train_lr": "0.000", "train_loss": "2.480"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 14}
+{"train_lr": "0.000", "train_loss": "2.481"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 15}
+{"train_lr": "0.000", "train_loss": "2.478"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 16}
+{"train_lr": "0.000", "train_loss": "2.474"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 17}
+{"train_lr": "0.000", "train_loss": "2.464"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 18}
+{"train_lr": "0.000", "train_loss": "2.468"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 19}
+{"train_lr": "0.000", "train_loss": "2.458"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 20}
+{"train_lr": "0.000", "train_loss": "2.461"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 21}
+{"train_lr": "0.000", "train_loss": "2.457"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 22}
+{"train_lr": "0.000", "train_loss": "2.456"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 23}
+{"train_lr": "0.000", "train_loss": "2.456"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 24}
+{"train_lr": "0.000", "train_loss": "2.455"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 25}
+{"train_lr": "0.000", "train_loss": "2.450"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 26}
+{"train_lr": "0.000", "train_loss": "2.454"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 27}
+{"train_lr": "0.000", "train_loss": "2.452"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 28}
+{"train_lr": "0.000", "train_loss": "2.446"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 29}

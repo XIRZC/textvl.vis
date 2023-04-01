@@ -1,0 +1,154 @@
+{
+    "run": {
+        "task": "captioning",
+        "lr_sched": "linear_warmup_cosine_lr",
+        "init_lr": 1e-05,
+        "min_lr": 0,
+        "warmup_lr": 1e-08,
+        "warmup_steps": 1000,
+        "weight_decay": 0.05,
+        "max_epoch": 10,
+        "batch_size_train": 32,
+        "batch_size_eval": 32,
+        "num_workers": 4,
+        "accum_grad_iters": 4,
+        "max_len": 30,
+        "min_len": 8,
+        "num_beams": 5,
+        "prompt": "Only model prompt work !!!",
+        "seed": 42,
+        "output_dir": "output/BLIP2/textcaps_fewshot_withoutocr_flant5xl_ldf",
+        "amp": false,
+        "resume_ckpt_path": null,
+        "evaluate": false,
+        "report_metric": false,
+        "train_splits": [
+            "train"
+        ],
+        "valid_splits": [
+            "val"
+        ],
+        "test_splits": [
+            "test"
+        ],
+        "device": "cuda",
+        "world_size": 2,
+        "dist_url": "env://",
+        "distributed": true,
+        "rank": 0,
+        "gpu": 0,
+        "dist_backend": "nccl"
+    },
+    "model": {
+        "arch": "blip2_t5",
+        "load_finetuned": false,
+        "pretrained": "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xl.pth",
+        "finetuned": "",
+        "image_size": 224,
+        "drop_path_rate": 0,
+        "use_grad_checkpoint": false,
+        "vit_precision": "fp16",
+        "freeze_vit": true,
+        "num_query_token": 32,
+        "t5_model": "google/flan-t5-xl",
+        "prompt_tuning": true,
+        "num_soft_prompt": 8,
+        "prompt": "",
+        "model_type": "ldf_textcaps_flant5xl",
+        "vit_model": "eva_clip_g",
+        "ocr_prepend": false,
+        "ocr_keyword": "picture",
+        "prompt_verbose": false
+    },
+    "preprocess": {
+        "vis_processor": {
+            "train": {
+                "name": "blip_image_train",
+                "image_size": 224
+            },
+            "eval": {
+                "name": "blip_image_eval",
+                "image_size": 224
+            }
+        },
+        "text_processor": {
+            "train": {
+                "name": "blip_caption"
+            },
+            "eval": {
+                "name": "blip_caption"
+            }
+        }
+    },
+    "datasets": {
+        "text_caption": {
+            "dataset_card": "dataset_card/text_caption.md",
+            "data_type": "images",
+            "build_info": {
+                "annotations": {
+                    "train": {
+                        "url": [
+                            "https://www.dropbox.com/s/i295t3kyj3cg3hv/TextCaps_0.1_train.json",
+                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/IC/TextCaps_0.1_train.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ]
+                    },
+                    "val": {
+                        "url": [
+                            "https://www.dropbox.com/s/62dejwrgkk8e86v/TextCaps_0.1_val.json",
+                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/IC/TextCaps_0.1_val.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ]
+                    },
+                    "test": {
+                        "url": [
+                            "https://www.dropbox.com/s/xwvqckq5x2pzbxg/TextCaps_0.1_test.json",
+                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ],
+                        "storage": [
+                            "/data/xzc/Datasets/TextVL/Annotations/IC/TextCaps_0.1_test.json",
+                            "/data/xzc/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ]
+                    }
+                },
+                "images": {
+                    "storage": "/data/xzc/Datasets/TextVL/Images/"
+                }
+            },
+            "type": "default",
+            "ocr_prepend": false,
+            "vis_processor": {
+                "train": {
+                    "name": "blip2_image_train",
+                    "image_size": 224
+                },
+                "eval": {
+                    "name": "blip_image_eval",
+                    "image_size": 224
+                }
+            },
+            "text_processor": {
+                "train": {
+                    "name": "blip_caption"
+                },
+                "eval": {
+                    "name": "blip_caption"
+                }
+            }
+        }
+    }
+}
+{"train_lr": "0.000", "train_loss": "2.861"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 0}
+{"train_lr": "0.000", "train_loss": "2.721"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 1}
+{"train_lr": "0.000", "train_loss": "2.692"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 2}
+{"train_lr": "0.000", "train_loss": "2.679"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 3}
