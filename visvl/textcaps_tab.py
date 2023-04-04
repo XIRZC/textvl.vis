@@ -14,8 +14,12 @@ def textcaps_tab_context():
         # Withocr_zeroshot
         ("^BLIP2_With_.*/zeroshot.*", 7),
         # Withoutocr_fewshot
-        ("^BLIP2_Without.*/fullshot.*", 0),
+        # ("^BLIP2_Without.*/fewshot.*", 0),
         # Withocr_fewshot
+        ("^BLIP2_With_.*/fewshot.*", 0),
+        # Withoutocr_fullshot
+        ("^BLIP2_Without.*/fullshot.*", 0),
+        # Withocr_fullshot
         ("^BLIP2_With_.*/fullshot.*", 0),
     ]
     NUM_CONTRAST = len(textcaps_pattern_list)
