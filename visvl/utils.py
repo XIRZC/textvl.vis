@@ -16,9 +16,9 @@ def dict_list2dict_dict(dict_list, key_name):
         dict_dict[item[key_name]] = item
     return dict_dict
 
-def load_anno_textvl_ocr(split, format="list"):
+def load_anno_textvl_ocr(split, format="list", version='Rosetta'):
 
-    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_Rosetta_OCR_v0.2_{split}.json"
+    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_{TEXTVL_OCR_VERSION_DICT[version]}_{split}.json"
 
     textvl_ocr_data = json.load(textvl_ocr_file_path.open())['data']
     if format == "dict":
@@ -54,16 +54,21 @@ def load_anno_textcaps(textcaps_sample_split, format="list"):
         return textcaps_anno_data, dict_list2dict_dict(textcaps_anno_data, 'image_id')
 
 
-textcaps_anno_list = dict()
 textvqa_anno_list = dict()
-textvl_ocr_anno_list = dict()
-textcaps_anno_dict = dict()
 textvqa_anno_dict = dict()
-textvl_ocr_anno_dict = dict()
+textcaps_anno_list = dict()
+textcaps_anno_dict = dict()
 for split in ['val', 'test']:
     textvqa_anno_list[split], textvqa_anno_dict[split] = load_anno_textvqa(split, format="both")
     textcaps_anno_list[split], textcaps_anno_dict[split] = load_anno_textcaps(split, format="both")
-    textvl_ocr_anno_list[split], textvl_ocr_anno_dict[split] = load_anno_textvl_ocr(split, format="both")
+
+textvl_ocr_anno_list = dict()
+textvl_ocr_anno_dict = dict()
+for version in TEXTVL_OCR_VERSION_DICT.keys():
+    textvl_ocr_anno_list[version] = dict()
+    textvl_ocr_anno_dict[version] = dict()
+    for split in ['val', 'test']:
+        textvl_ocr_anno_list[version][split], textvl_ocr_anno_dict[version][split] = load_anno_textvl_ocr(split, format="both", version=version)
 
 
 def load_samples_textvqa(textvqa_sample_split, textvqa_prompt_vis_subdir, format="dict"):
@@ -89,7 +94,6 @@ def load_samples_textcaps(textcaps_sample_split, textcaps_prompt_vis_subdir, for
 def get_sample_textvqa(split, index, *subdirs):
 
     textvqa_anno_data_list = textvqa_anno_list[split]
-    textvl_ocr_data_dict = textvl_ocr_anno_dict[split]
     answer_output_pred_list = []
     for subdir in subdirs:
         textvqa_samples_data_dict = load_samples_textvqa(split, subdir, format="dict")
@@ -105,16 +109,21 @@ def get_sample_textvqa(split, index, *subdirs):
             answer_output_gt = '\t\t\t'.join([f""+answer for i, answer in enumerate(question_anno_data['answers'])])
         else:
             answer_output_gt = 'No GroundTruth for test split !!!'
-        ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
+
+        all_version_ocr_input_list = []
+        for version in TEXTVL_OCR_VERSION_DICT.keys():
+            textvl_ocr_data_dict = textvl_ocr_anno_dict[version][split]
+            ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
+            all_version_ocr_input_list.append(ocr_input)
+
         image_split = 'trainval' if split == 'val' else 'test'
         image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
     
-    return [str(image_input), ocr_input, question_input, answer_output_gt, *answer_output_pred_list]
+    return [str(image_input),*all_version_ocr_input_list, question_input, answer_output_gt, *answer_output_pred_list]
 
 def get_sample_textcaps(split, index, *subdirs):
 
     textcaps_anno_data_list = textcaps_anno_list[split]
-    textvl_ocr_data_dict = textvl_ocr_anno_dict[split]
     caption_output_pred_list = []
     for subdir in subdirs:
         textcaps_samples_data_dict = load_samples_textcaps(split, subdir, format="dict")
@@ -128,11 +137,17 @@ def get_sample_textcaps(split, index, *subdirs):
             caption_output_gt = '\n'.join([f""+caption for i, caption in enumerate(caption_anno_data['reference_strs']) ])
         else:
             caption_output_gt = 'No GroundTruth for test split !!!'
-        ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
+
+        all_version_ocr_input_list = []
+        for version in TEXTVL_OCR_VERSION_DICT.keys():
+            textvl_ocr_data_dict = textvl_ocr_anno_dict[version][split]
+            ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
+            all_version_ocr_input_list.append(ocr_input)
+
         image_split = 'trainval' if split == 'val' else 'test'
         image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
 
-    return [str(image_input), ocr_input, caption_output_gt, *caption_output_pred_list]
+    return [str(image_input), *all_version_ocr_input_list, caption_output_gt, *caption_output_pred_list]
 
 def random_select_textvqa(split, *subdirs):
 

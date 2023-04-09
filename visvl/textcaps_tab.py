@@ -10,7 +10,7 @@ def textcaps_tab_context():
     textcaps_vis_files_list = get_file_list(TEXTCAPS_VIS_ROOT)
     textcaps_pattern_list = [
         # Withoutocr_zeroshot
-        ("^BLIP2_Without.*/zeroshot.*", 1),
+        # ("^BLIP2_Without.*/zeroshot.*", 1),
         # Withocr_zeroshot
         ("^BLIP2_With_.*/zeroshot.*", 7),
         # Withoutocr_fewshot
@@ -18,7 +18,7 @@ def textcaps_tab_context():
         # Withocr_fewshot
         ("^BLIP2_With_.*/fewshot.*", 0),
         # Withoutocr_fullshot
-        ("^BLIP2_Without.*/fullshot.*", 0),
+        # ("^BLIP2_Without.*/fullshot.*", 0),
         # Withocr_fullshot
         ("^BLIP2_With_.*/fullshot.*", 0),
     ]
@@ -42,13 +42,16 @@ def textcaps_tab_context():
 
         with gr.Row():
 
-            textcaps_image_input = gr.Image(label='Image')
+            with gr.Column():
+                textcaps_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
+                textcaps_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
+                textcaps_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                textcaps_image_input = gr.Image(label='Image')
 
             with gr.Column():
 
                 with gr.Box(elem_id=f"textcaps_anno_box"):
 
-                    textcaps_ocr_input = gr.Textbox(label='OCR texts')
                     textcaps_caption_output_gt = gr.Textbox(label='5 GroundTruth Captions')
 
                 for i in range(NUM_CONTRAST):
@@ -61,13 +64,15 @@ def textcaps_tab_context():
 
     textcaps_random_select_button.click(fn=random_select_textcaps, \
                                        inputs=[textcaps_split_radio, *textcaps_template_contrasts_list], \
-                                       outputs=[textcaps_image_input, textcaps_ocr_input, \
+                                       outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
+                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, \
                                            textcaps_caption_output_gt, *textcaps_prediction_contrasts_list,\
                                             textcaps_sample_index_slider])
 
     textcaps_sample_index_slider.change(get_sample_textcaps, \
                                        inputs=[textcaps_split_radio, textcaps_sample_index_slider, \
                                         *textcaps_template_contrasts_list], \
-                                       outputs=[textcaps_image_input, textcaps_ocr_input, \
+                                       outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
+                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, \
                                            textcaps_caption_output_gt, \
                                            *textcaps_prediction_contrasts_list])

@@ -10,7 +10,7 @@ def textvqa_tab_context():
     textvqa_vis_files_list = get_file_list(TEXTVQA_VIS_ROOT)
     textvqa_pattern_list = [
         # Withoutocr_zeroshot
-        ("^BLIP2_Without.*/zeroshot.*", 1),
+        # ("^BLIP2_Without.*/zeroshot.*", 1),
         # Withocr_zeroshot
         ("^BLIP2_With_.*/zeroshot.*", 7),
         # Withoutocr_fewshot
@@ -18,7 +18,7 @@ def textvqa_tab_context():
         # Withocr_fewshot
         ("^BLIP2_With_.*/fewshot.*", 0),
         # Withoutocr_fullshot
-        ("^BLIP2_Without.*/fullshot.*", 0),
+        # ("^BLIP2_Without.*/fullshot.*", 0),
         # Withocr_fullshot
         ("^BLIP2_With_.*/fullshot.*", 0),
     ]
@@ -42,13 +42,16 @@ def textvqa_tab_context():
 
         with gr.Row():
 
-            textvqa_image_input = gr.Image(label='Image')
+            with gr.Column():
+                textvqa_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
+                textvqa_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
+                textvqa_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                textvqa_image_input = gr.Image(label='Image')
 
             with gr.Column():
 
                 with gr.Box(elem_id=f"textvqa_anno_box"):
 
-                    textvqa_ocr_input = gr.Textbox(label='OCR Texts')
                     textvqa_question_input = gr.Textbox(label='Question')
                     textvqa_answer_output_gt = gr.Textbox(label='10 GroundTruth Answers')
 
@@ -64,7 +67,8 @@ def textvqa_tab_context():
     textvqa_random_select_button.click(fn=random_select_textvqa, \
                                        inputs=[textvqa_split_radio, \
                                          *textvqa_template_contrasts_list], \
-                                       outputs=[textvqa_image_input, textvqa_ocr_input, \
+                                       outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
+                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, \
                                          textvqa_question_input, textvqa_answer_output_gt, \
                                          *textvqa_prediction_contrasts_list, \
                                          textvqa_sample_index_slider])
@@ -72,6 +76,7 @@ def textvqa_tab_context():
     textvqa_sample_index_slider.change(get_sample_textvqa, \
                                        inputs=[textvqa_split_radio, textvqa_sample_index_slider, \
                                         *textvqa_template_contrasts_list], \
-                                       outputs=[textvqa_image_input, textvqa_ocr_input, \
+                                       outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
+                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, \
                                          textvqa_question_input, textvqa_answer_output_gt, \
                                          *textvqa_prediction_contrasts_list])
