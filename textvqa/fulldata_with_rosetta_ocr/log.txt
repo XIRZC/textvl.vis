@@ -1,0 +1,214 @@
+{
+    "run": {
+        "task": "vqa",
+        "lr_sched": "linear_warmup_cosine_lr",
+        "init_lr": 2e-05,
+        "min_lr": 1e-08,
+        "warmup_lr": 1e-08,
+        "warmup_steps": 1000,
+        "weight_decay": 0.05,
+        "max_epoch": 30,
+        "batch_size_train": 12,
+        "batch_size_eval": 12,
+        "num_workers": 4,
+        "accum_grad_iters": 1,
+        "max_len": 10,
+        "min_len": 1,
+        "num_beams": 5,
+        "inference_method": "generate",
+        "log_freq": 10,
+        "prompt": "Question: {} Short answer with OCR texts in the photo:",
+        "seed": 42,
+        "output_dir": "output/BLIP2/textvqa_fewshot_withocr_flant5xl_ldf",
+        "amp": false,
+        "resume_ckpt_path": null,
+        "evaluate": false,
+        "report_metric": false,
+        "train_splits": [
+            "train"
+        ],
+        "valid_splits": [
+            "val"
+        ],
+        "test_splits": [
+            "test"
+        ],
+        "device": "cuda",
+        "world_size": 2,
+        "dist_url": "env://",
+        "distributed": true,
+        "rank": 0,
+        "gpu": 0,
+        "dist_backend": "nccl"
+    },
+    "model": {
+        "arch": "blip2_t5",
+        "load_finetuned": false,
+        "pretrained": "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xl.pth",
+        "finetuned": "",
+        "image_size": 224,
+        "drop_path_rate": 0,
+        "use_grad_checkpoint": false,
+        "vit_precision": "fp16",
+        "freeze_vit": true,
+        "num_query_token": 32,
+        "t5_model": "google/flan-t5-xl",
+        "prompt_tuning": true,
+        "num_soft_prompt": 8,
+        "soft_prompt_init_method": "zero",
+        "prompt": "Only task Prompt work !!!",
+        "model_type": "ldf_textvqa_flant5xl",
+        "vit_model": "eva_clip_g",
+        "prompt_freeze_gate": false,
+        "freeze_query": false,
+        "freeze_fc": false,
+        "freeze_qformer": false,
+        "freeze_llm": true,
+        "ocr_prepend": true,
+        "ocr_keyword": "photo",
+        "prompt_verbose": false
+    },
+    "preprocess": {
+        "vis_processor": {
+            "train": {
+                "name": "blip_image_train",
+                "image_size": 224
+            },
+            "eval": {
+                "name": "blip_image_eval",
+                "image_size": 224
+            }
+        },
+        "text_processor": {
+            "train": {
+                "name": "blip_question"
+            },
+            "eval": {
+                "name": "blip_question"
+            }
+        }
+    },
+    "datasets": {
+        "text_vqa": {
+            "dataset_card": "dataset_card/text_vqa.md",
+            "data_type": "images",
+            "build_info": {
+                "annotations": {
+                    "train": {
+                        "url": [
+                            "https://www.dropbox.com/s/8x94f20xzr2x5kb/TextVQA_0.5.1_train.json",
+                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json"
+                        ]
+                    },
+                    "val": {
+                        "url": [
+                            "https://www.dropbox.com/s/fj2dg9p2jiyxp17/TextVQA_0.5.1_val.json",
+                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json"
+                        ]
+                    },
+                    "test": {
+                        "url": [
+                            "https://www.dropbox.com/s/a34q5ygn7s9l4qm/TextVQA_0.5.1_test.json",
+                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json"
+                        ]
+                    }
+                },
+                "images": {
+                    "storage": "/public/home/mrxirzzz/Datasets/TextVL/Images/"
+                }
+            },
+            "type": "default",
+            "ocr_prepend": true,
+            "vis_processor": {
+                "train": {
+                    "name": "blip2_image_train",
+                    "image_size": 224
+                },
+                "eval": {
+                    "name": "blip_image_eval",
+                    "image_size": 224
+                }
+            },
+            "text_processor": {
+                "train": {
+                    "name": "blip_question"
+                },
+                "eval": {
+                    "name": "blip_question"
+                }
+            }
+        }
+    }
+}
+{"train_lr": "0.00001306", "train_loss": "1.50147538"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 0}
+{"train_lr": "0.00001995", "train_loss": "1.29942008"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 1}
+{"train_lr": "0.00001978", "train_loss": "1.20183214"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 2}
+{"train_lr": "0.00001951", "train_loss": "1.16354038"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 3}
+{"train_lr": "0.00001914", "train_loss": "1.12598213"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 4}
+{"train_lr": "0.00001866", "train_loss": "1.10786244"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 5}
+{"train_lr": "0.00001809", "train_loss": "1.07772026"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 6}
+{"train_lr": "0.00001743", "train_loss": "1.05263395"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 7}
+{"train_lr": "0.00001669", "train_loss": "1.02383502"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 8}
+{"train_lr": "0.00001588", "train_loss": "1.00820325"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 9}
+{"train_lr": "0.00001500", "train_loss": "0.98803604"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 10}
+{"train_lr": "0.00001407", "train_loss": "0.96342238"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 11}
+{"train_lr": "0.00001309", "train_loss": "0.93847009"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 12}
+{"train_lr": "0.00001208", "train_loss": "0.92277703"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 13}
+{"train_lr": "0.00001105", "train_loss": "0.90426114"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 14}
+{"train_lr": "0.00001001", "train_loss": "0.87600748"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 15}
+{"train_lr": "0.00000896", "train_loss": "0.86100213"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 16}
+{"train_lr": "0.00000793", "train_loss": "0.84054950"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 17}
+{"train_lr": "0.00000692", "train_loss": "0.82940317"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 18}
+{"train_lr": "0.00000594", "train_loss": "0.81154532"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 19}
+{"train_lr": "0.00000501", "train_loss": "0.79516435"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 20}
+{"train_lr": "0.00000413", "train_loss": "0.77895396"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 21}
+{"train_lr": "0.00000332", "train_loss": "0.77519323"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 22}
+{"train_lr": "0.00000258", "train_loss": "0.76816013"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 23}
+{"train_lr": "0.00000192", "train_loss": "0.75832790"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 24}
+{"train_lr": "0.00000135", "train_loss": "0.75255259"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 25}
+{"train_lr": "0.00000087", "train_loss": "0.74602421"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 26}
+{"train_lr": "0.00000050", "train_loss": "0.74566501"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 27}
+{"train_lr": "0.00000023", "train_loss": "0.74340226"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 28}
+{"train_lr": "0.00000006", "train_loss": "0.73873932"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 29}
