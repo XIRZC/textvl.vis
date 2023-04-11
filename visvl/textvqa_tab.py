@@ -10,19 +10,16 @@ def textvqa_tab_context():
     textvqa_vis_files_list = get_file_list(TEXTVQA_VIS_ROOT)
     textvqa_pattern_list = [
         # Withoutocr_zeroshot
-        # ("^BLIP2_Without.*/zeroshot.*", 1),
+        ("^MALDF.*zerodata_without.*", 0),
         # Withocr_zeroshot
-        # ("^BLIP2_With_.*/zeroshot.*", 7),
         ("^MALDF.*zerodata_with_.*", 0),
         # Withoutocr_fewshot
-        # ("^BLIP2_Without.*/fewshot.*", 0),
+        ("^MALDF.*lowdata1p_without.*", 0),
         # Withocr_fewshot
-        # ("^BLIP2_With_.*/fewshot.*", 0),
         ("^MALDF.*lowdata1p_with_.*", 0),
         # Withoutocr_fullshot
-        # ("^BLIP2_Without.*/fullshot.*", 0),
+        ("^MALDF.*fulldata_without.*", 0),
         # Withocr_fullshot
-        # ("^BLIP2_With_.*/fullshot.*", 0),
         ("^MALDF.*fulldata_with_.*", 0),
     ]
     NUM_CONTRAST = len(textvqa_pattern_list)
@@ -46,17 +43,16 @@ def textvqa_tab_context():
         with gr.Row():
 
             with gr.Column():
-                textvqa_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
-                textvqa_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
-                textvqa_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                with gr.Box(elem_id=f"textvqa_anno_box"):
+                    textvqa_question_input = gr.Textbox(label='Question')
+                    textvqa_answer_output_gt = gr.Textbox(label='10 GroundTruth Answers')
+                with gr.Box(elem_id=f"textvqa_ocr_box"):
+                    textvqa_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
+                    textvqa_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
+                    textvqa_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
                 textvqa_image_input = gr.Image(label='Image')
 
             with gr.Column():
-
-                with gr.Box(elem_id=f"textvqa_anno_box"):
-
-                    textvqa_question_input = gr.Textbox(label='Question')
-                    textvqa_answer_output_gt = gr.Textbox(label='10 GroundTruth Answers')
 
                 for i in range(NUM_CONTRAST):
                     # Prompt Template Dropdown and prediction text output

@@ -2,21 +2,21 @@
     "run": {
         "task": "captioning",
         "lr_sched": "linear_warmup_cosine_lr",
-        "init_lr": 2e-05,
-        "min_lr": 0,
+        "init_lr": 8e-05,
+        "min_lr": 1e-09,
         "warmup_lr": 1e-08,
-        "warmup_steps": 2000,
+        "warmup_steps": 15,
         "weight_decay": 0.05,
         "max_epoch": 10,
-        "batch_size_train": 6,
-        "batch_size_eval": 6,
+        "batch_size_train": 48,
+        "batch_size_eval": 48,
         "num_workers": 4,
         "accum_grad_iters": 1,
         "max_len": 30,
         "min_len": 8,
         "num_beams": 5,
         "prompt": "Only model prompt work !!!",
-        "log_freq": 10,
+        "log_freq": 2,
         "seed": 42,
         "output_dir": "output/BLIP2/textcaps_fewshot_withocr_flant5xl_ldf",
         "amp": false,
@@ -53,9 +53,9 @@
         "num_query_token": 32,
         "t5_model": "google/flan-t5-xl",
         "prompt_tuning": true,
-        "num_soft_prompt": 8,
+        "num_soft_prompt": 4,
         "soft_prompt_init_method": "zero",
-        "prompt": "Describe the picture:",
+        "prompt": "",
         "model_type": "ldf_textcaps_flant5xl",
         "vit_model": "eva_clip_g",
         "prompt_freeze_gate": false,
@@ -63,8 +63,8 @@
         "freeze_fc": false,
         "freeze_qformer": false,
         "freeze_llm": true,
-        "ocr_prepend": true,
-        "ocr_version": "Amazon",
+        "ocr_prepend": false,
+        "ocr_version": "Rosetta",
         "ocr_keyword": "picture",
         "prompt_verbose": false
     },
@@ -142,8 +142,9 @@
                 }
             },
             "type": "default",
-            "ocr_prepend": true,
-            "ocr_version": "Amazon",
+            "low_data_percentage": 1,
+            "ocr_prepend": false,
+            "ocr_version": "Rosetta",
             "vis_processor": {
                 "train": {
                     "name": "blip2_image_train",
@@ -165,23 +166,23 @@
         }
     }
 }
-{"train_lr": "0.00001781", "train_loss": "1.99682220"}
+{"train_lr": "0.00002667", "train_loss": "2.87033383"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 0}
-{"train_lr": "0.00001951", "train_loss": "1.90523800"}
+{"train_lr": "0.00007804", "train_loss": "2.56162873"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 1}
-{"train_lr": "0.00001809", "train_loss": "1.86773914"}
+{"train_lr": "0.00007236", "train_loss": "2.48801475"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 2}
-{"train_lr": "0.00001588", "train_loss": "1.83974713"}
+{"train_lr": "0.00006351", "train_loss": "2.42440400"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 3}
-{"train_lr": "0.00001309", "train_loss": "1.81336984"}
+{"train_lr": "0.00005236", "train_loss": "2.38211377"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 4}
-{"train_lr": "0.00001000", "train_loss": "1.79109218"}
+{"train_lr": "0.00004000", "train_loss": "2.35148682"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 5}
-{"train_lr": "0.00000691", "train_loss": "1.77087888"}
+{"train_lr": "0.00002764", "train_loss": "2.34149442"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 6}
-{"train_lr": "0.00000412", "train_loss": "1.75558262"}
+{"train_lr": "0.00001649", "train_loss": "2.33499502"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 7}
-{"train_lr": "0.00000191", "train_loss": "1.74448727"}
+{"train_lr": "0.00000764", "train_loss": "2.32795844"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 8}
-{"train_lr": "0.00000049", "train_loss": "1.73868437"}
+{"train_lr": "0.00000196", "train_loss": "2.33084217"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 9}

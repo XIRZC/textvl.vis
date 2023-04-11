@@ -10,19 +10,16 @@ def textcaps_tab_context():
     textcaps_vis_files_list = get_file_list(TEXTCAPS_VIS_ROOT)
     textcaps_pattern_list = [
         # Withoutocr_zeroshot
-        # ("^BLIP2_Without.*/zeroshot.*", 1),
+        ("^MALDF.*zerodata_without.*", 0),
         # Withocr_zeroshot
-        # ("^BLIP2_With_.*/zeroshot.*", 7),
         ("^MALDF.*zerodata_with_.*", 0),
         # Withoutocr_fewshot
-        # ("^BLIP2_Without.*/fewshot.*", 0),
+        ("^MALDF.*lowdata1p_without.*", 0),
         # Withocr_fewshot
-        # ("^BLIP2_With_.*/fewshot.*", 0),
         ("^MALDF.*lowdata1p_with_.*", 0),
         # Withoutocr_fullshot
-        # ("^BLIP2_Without.*/fullshot.*", 0),
+        ("^MALDF.*fulldata_without.*", 0),
         # Withocr_fullshot
-        # ("^BLIP2_With_.*/fullshot.*", 0),
         ("^MALDF.*fulldata_with_.*", 0),
     ]
     NUM_CONTRAST = len(textcaps_pattern_list)
@@ -46,16 +43,15 @@ def textcaps_tab_context():
         with gr.Row():
 
             with gr.Column():
-                textcaps_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
-                textcaps_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
-                textcaps_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                with gr.Box(elem_id=f"textcaps_anno_box"):
+                    textcaps_caption_output_gt = gr.Textbox(label='5 GroundTruth Captions')
+                with gr.Box(elem_id=f"textcaps_ocr_box"):
+                    textcaps_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
+                    textcaps_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
+                    textcaps_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
                 textcaps_image_input = gr.Image(label='Image')
 
             with gr.Column():
-
-                with gr.Box(elem_id=f"textcaps_anno_box"):
-
-                    textcaps_caption_output_gt = gr.Textbox(label='5 GroundTruth Captions')
 
                 for i in range(NUM_CONTRAST):
                     with gr.Box(elem_id=f"textcaps_contrast_box{i+1}"):
