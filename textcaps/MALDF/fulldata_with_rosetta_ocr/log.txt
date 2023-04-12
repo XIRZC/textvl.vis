@@ -2,14 +2,14 @@
     "run": {
         "task": "captioning",
         "lr_sched": "linear_warmup_cosine_lr",
-        "init_lr": 4e-05,
-        "min_lr": 1e-10,
+        "init_lr": 2e-05,
+        "min_lr": 0,
         "warmup_lr": 1e-08,
-        "warmup_steps": 1000,
+        "warmup_steps": 2000,
         "weight_decay": 0.05,
-        "max_epoch": 30,
-        "batch_size_train": 12,
-        "batch_size_eval": 12,
+        "max_epoch": 10,
+        "batch_size_train": 8,
+        "batch_size_eval": 8,
         "num_workers": 4,
         "accum_grad_iters": 1,
         "max_len": 30,
@@ -64,6 +64,7 @@
         "freeze_qformer": false,
         "freeze_llm": true,
         "ocr_prepend": true,
+        "ocr_version": "Rosetta",
         "ocr_keyword": "picture",
         "prompt_verbose": false
     },
@@ -96,31 +97,43 @@
                     "train": {
                         "url": [
                             "https://www.dropbox.com/s/i295t3kyj3cg3hv/TextCaps_0.1_train.json",
-                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json"
+                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json",
+                            "https://www.dropbox.com/s/ejfw3g5oqrc4fyg/TextVQA_Microsoft_OCR_v1.0_train.json",
+                            "https://www.dropbox.com/s/6jz7lgief9irzs8/TextVQA_Amazon_OCR_v1.0_train.json"
                         ],
                         "storage": [
                             "/public/home/mrxirzzz/Datasets/TextVL/Annotations/IC/TextCaps_0.1_train.json",
-                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json"
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_train.json"
                         ]
                     },
                     "val": {
                         "url": [
                             "https://www.dropbox.com/s/62dejwrgkk8e86v/TextCaps_0.1_val.json",
-                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json"
+                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json",
+                            "https://www.dropbox.com/s/y00va0lc7drtw7n/TextVQA_Microsoft_OCR_v1.0_val.json",
+                            "https://www.dropbox.com/s/9jdwx36anxonk6y/TextVQA_Amazon_OCR_v1.0_val.json"
                         ],
                         "storage": [
                             "/public/home/mrxirzzz/Datasets/TextVL/Annotations/IC/TextCaps_0.1_val.json",
-                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json"
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_val.json"
                         ]
                     },
                     "test": {
                         "url": [
                             "https://www.dropbox.com/s/xwvqckq5x2pzbxg/TextCaps_0.1_test.json",
-                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json"
+                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json",
+                            "https://www.dropbox.com/s/sw4y8z8cgpzjory/TextVQA_Microsoft_OCR_v1.0_test.json",
+                            "https://www.dropbox.com/s/yiactr9epk9bfey/TextVQA_Amazon_OCR_v1.0_test.json"
                         ],
                         "storage": [
                             "/public/home/mrxirzzz/Datasets/TextVL/Annotations/IC/TextCaps_0.1_test.json",
-                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json"
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_test.json"
                         ]
                     }
                 },
@@ -130,6 +143,7 @@
             },
             "type": "default",
             "ocr_prepend": true,
+            "ocr_version": "Rosetta",
             "vis_processor": {
                 "train": {
                     "name": "blip2_image_train",
@@ -151,38 +165,23 @@
         }
     }
 }
-{"train_lr": "0.00003562", "train_loss": "2.09384969"}
+{"train_lr": "0.00001708", "train_loss": "2.10876328"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 0}
-{"train_lr": "0.00003989", "train_loss": "1.99991996"}
+{"train_lr": "0.00001951", "train_loss": "2.00890729"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 1}
-{"train_lr": "0.00003956", "train_loss": "1.95755395"}
+{"train_lr": "0.00001809", "train_loss": "1.97123749"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 2}
-{"train_lr": "0.00003902", "train_loss": "1.92361219"}
+{"train_lr": "0.00001588", "train_loss": "1.94055968"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 3}
-{"train_lr": "0.00003827", "train_loss": "1.89663817"}
+{"train_lr": "0.00001309", "train_loss": "1.91497052"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 4}
-{"train_lr": "0.00003732", "train_loss": "1.86969084"}
+{"train_lr": "0.00001000", "train_loss": "1.89271843"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 5}
-{"train_lr": "0.00003618", "train_loss": "1.84698056"}
+{"train_lr": "0.00000691", "train_loss": "1.87392442"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 6}
-{"train_lr": "0.00003486", "train_loss": "1.81957772"}
+{"train_lr": "0.00000412", "train_loss": "1.85778230"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 7}
-{"train_lr": "0.00003338", "train_loss": "1.79660182"}
+{"train_lr": "0.00000191", "train_loss": "1.84607158"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 8}
-{"train_lr": "0.00003176", "train_loss": "1.77418290"}
+{"train_lr": "0.00000049", "train_loss": "1.84021845"}
 {"val_agg_metrics": 0.0, "val_best_epoch": 9}
-{"train_lr": "0.00003000", "train_loss": "1.75087459"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 10}
-{"train_lr": "0.00002813", "train_loss": "1.73115979"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 11}
-{"train_lr": "0.00002618", "train_loss": "1.70967549"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 12}
-{"train_lr": "0.00002416", "train_loss": "1.69027695"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 13}
-{"train_lr": "0.00002209", "train_loss": "1.67095277"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 14}
-{"train_lr": "0.00002000", "train_loss": "1.65335919"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 15}
-{"train_lr": "0.00001791", "train_loss": "1.63706610"}
-{"val_agg_metrics": 0.0, "val_best_epoch": 16}
-{"train_lr": "0.00001584", "train_loss": "1.62071130"}

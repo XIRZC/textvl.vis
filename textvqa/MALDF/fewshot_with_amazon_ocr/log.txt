@@ -1,0 +1,189 @@
+{
+    "run": {
+        "task": "vqa",
+        "lr_sched": "linear_warmup_cosine_lr",
+        "init_lr": 6e-05,
+        "min_lr": 0,
+        "warmup_lr": 1e-08,
+        "warmup_steps": 3,
+        "weight_decay": 0.05,
+        "max_epoch": 10,
+        "batch_size_train": 6,
+        "batch_size_eval": 6,
+        "num_workers": 4,
+        "accum_grad_iters": 1,
+        "max_len": 10,
+        "min_len": 1,
+        "num_beams": 5,
+        "inference_method": "generate",
+        "log_freq": 1,
+        "prompt": "Question: {} Short answer with OCR texts in the photo:",
+        "seed": 42,
+        "output_dir": "output/BLIP2/textvqa_fewshot_withocr_flant5xl_ldf",
+        "amp": false,
+        "resume_ckpt_path": null,
+        "evaluate": false,
+        "report_metric": false,
+        "train_splits": [
+            "train"
+        ],
+        "valid_splits": [
+            "val"
+        ],
+        "test_splits": [
+            "test"
+        ],
+        "device": "cuda",
+        "world_size": 2,
+        "dist_url": "env://",
+        "distributed": true,
+        "rank": 0,
+        "gpu": 0,
+        "dist_backend": "nccl"
+    },
+    "model": {
+        "arch": "blip2_t5",
+        "load_finetuned": false,
+        "pretrained": "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xl.pth",
+        "finetuned": "",
+        "image_size": 224,
+        "drop_path_rate": 0,
+        "use_grad_checkpoint": false,
+        "vit_precision": "fp16",
+        "freeze_vit": true,
+        "num_query_token": 32,
+        "t5_model": "google/flan-t5-xl",
+        "prompt_tuning": true,
+        "num_soft_prompt": 4,
+        "soft_prompt_init_method": "zero",
+        "prompt": "Only task Prompt work !!!",
+        "model_type": "ldf_textvqa_flant5xl",
+        "vit_model": "eva_clip_g",
+        "prompt_freeze_gate": false,
+        "freeze_query": false,
+        "freeze_fc": false,
+        "freeze_qformer": false,
+        "freeze_llm": true,
+        "ocr_prepend": true,
+        "ocr_version": "Amazon",
+        "ocr_keyword": "photo",
+        "prompt_verbose": false
+    },
+    "preprocess": {
+        "vis_processor": {
+            "train": {
+                "name": "blip_image_train",
+                "image_size": 224
+            },
+            "eval": {
+                "name": "blip_image_eval",
+                "image_size": 224
+            }
+        },
+        "text_processor": {
+            "train": {
+                "name": "blip_question"
+            },
+            "eval": {
+                "name": "blip_question"
+            }
+        }
+    },
+    "datasets": {
+        "text_vqa": {
+            "dataset_card": "dataset_card/text_vqa.md",
+            "data_type": "images",
+            "build_info": {
+                "annotations": {
+                    "train": {
+                        "url": [
+                            "https://www.dropbox.com/s/8x94f20xzr2x5kb/TextVQA_0.5.1_train.json",
+                            "https://www.dropbox.com/s/7gevruw1cntdt12/TextVQA_Rosetta_OCR_v0.2_train.json",
+                            "https://www.dropbox.com/s/ejfw3g5oqrc4fyg/TextVQA_Microsoft_OCR_v1.0_train.json",
+                            "https://www.dropbox.com/s/6jz7lgief9irzs8/TextVQA_Amazon_OCR_v1.0_train.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_train.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_train.json"
+                        ]
+                    },
+                    "val": {
+                        "url": [
+                            "https://www.dropbox.com/s/fj2dg9p2jiyxp17/TextVQA_0.5.1_val.json",
+                            "https://www.dropbox.com/s/9qtyk6qt6j84jpm/TextVQA_Rosetta_OCR_v0.2_val.json",
+                            "https://www.dropbox.com/s/y00va0lc7drtw7n/TextVQA_Microsoft_OCR_v1.0_val.json",
+                            "https://www.dropbox.com/s/9jdwx36anxonk6y/TextVQA_Amazon_OCR_v1.0_val.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_val.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_val.json"
+                        ]
+                    },
+                    "test": {
+                        "url": [
+                            "https://www.dropbox.com/s/a34q5ygn7s9l4qm/TextVQA_0.5.1_test.json",
+                            "https://www.dropbox.com/s/cau1pbx52in93fw/TextVQA_Rosetta_OCR_v0.2_test.json",
+                            "https://www.dropbox.com/s/sw4y8z8cgpzjory/TextVQA_Microsoft_OCR_v1.0_test.json",
+                            "https://www.dropbox.com/s/yiactr9epk9bfey/TextVQA_Amazon_OCR_v1.0_test.json"
+                        ],
+                        "storage": [
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/VQA/TextVQA_0.5.1_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Rosetta_OCR_v0.2_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Microsoft_OCR_v1.0_test.json",
+                            "/public/home/mrxirzzz/Datasets/TextVL/Annotations/OCR/TextVQA_Amazon_OCR_v1.0_test.json"
+                        ]
+                    }
+                },
+                "images": {
+                    "storage": "/public/home/mrxirzzz/Datasets/TextVL/Images/"
+                }
+            },
+            "type": "default",
+            "low_data_samples": 32,
+            "ocr_prepend": true,
+            "ocr_version": "Amazon",
+            "vis_processor": {
+                "train": {
+                    "name": "blip2_image_train",
+                    "image_size": 224
+                },
+                "eval": {
+                    "name": "blip_image_eval",
+                    "image_size": 224
+                }
+            },
+            "text_processor": {
+                "train": {
+                    "name": "blip_question"
+                },
+                "eval": {
+                    "name": "blip_question"
+                }
+            }
+        }
+    }
+}
+{"train_lr": "0.00001001", "train_loss": "0.91346698"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 0}
+{"train_lr": "0.00005853", "train_loss": "1.44895816"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 1}
+{"train_lr": "0.00005427", "train_loss": "1.31224151"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 2}
+{"train_lr": "0.00004763", "train_loss": "1.12832841"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 3}
+{"train_lr": "0.00003927", "train_loss": "1.06740059"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 4}
+{"train_lr": "0.00003000", "train_loss": "0.78506353"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 5}
+{"train_lr": "0.00002073", "train_loss": "1.08080500"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 6}
+{"train_lr": "0.00001237", "train_loss": "0.86456040"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 7}
+{"train_lr": "0.00000573", "train_loss": "1.12470922"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 8}
+{"train_lr": "0.00000147", "train_loss": "0.92431561"}
+{"val_agg_metrics": 0.0, "val_best_epoch": 9}
