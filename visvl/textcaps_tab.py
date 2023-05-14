@@ -49,6 +49,7 @@ def textcaps_tab_context():
                     textcaps_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
                     textcaps_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
                     textcaps_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                    textcaps_amazon_lined_ocr_input = gr.Textbox(label='Amazon Line-Separate OCR Texts')
                 textcaps_image_input = gr.Image(label='Image')
 
             with gr.Column():
@@ -64,7 +65,7 @@ def textcaps_tab_context():
     textcaps_random_select_button.click(fn=random_select_textcaps, \
                                        inputs=[textcaps_split_radio, *textcaps_template_contrasts_list], \
                                        outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
-                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, \
+                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, textcaps_amazon_lined_ocr_input, \
                                            textcaps_caption_output_gt, *textcaps_prediction_contrasts_list,\
                                             textcaps_sample_index_slider])
 
@@ -72,6 +73,6 @@ def textcaps_tab_context():
                                        inputs=[textcaps_split_radio, textcaps_sample_index_slider, \
                                         *textcaps_template_contrasts_list], \
                                        outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
-                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, \
+                                            textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, textcaps_amazon_lined_ocr_input, \
                                            textcaps_caption_output_gt, \
                                            *textcaps_prediction_contrasts_list])

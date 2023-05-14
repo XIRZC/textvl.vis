@@ -1,6 +1,9 @@
 from pathlib import Path
 import json
 import random
+import math
+from PIL import Image, ImageDraw
+from PIL import ImagePath 
 from .consts import *
 
 def get_file_list(root_path):
@@ -27,7 +30,19 @@ def load_anno_textvl_ocr(split, format="list", version='Rosetta'):
         return textvl_ocr_data
     else: # "both" for first list second dict
         return textvl_ocr_data, dict_list2dict_dict(textvl_ocr_data, 'image_id')
+
+def load_amazon_anno_textvl_ocr_line(split, format="list"):
     
+    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_Amazon_OCR_v2.0_{split}.json"
+
+    textvl_ocr_data = json.load(textvl_ocr_file_path.open())['data']
+
+    if format == "dict":
+        return dict_list2dict_dict(textvl_ocr_data, 'image_id')
+    elif format == "list":
+        return textvl_ocr_data
+    else: # "both" for first list second dict
+        return textvl_ocr_data, dict_list2dict_dict(textvl_ocr_data, 'image_id')
 
 def load_anno_textvqa(textvqa_sample_split, format="list"):
 
@@ -69,6 +84,10 @@ for version in TEXTVL_OCR_VERSION_DICT.keys():
     textvl_ocr_anno_dict[version] = dict()
     for split in ['val', 'test']:
         textvl_ocr_anno_list[version][split], textvl_ocr_anno_dict[version][split] = load_anno_textvl_ocr(split, format="both", version=version)
+# Amazon Line-Separate Annotation
+textvl_ocr_line_anno_list, textvl_ocr_line_anno_dict = dict(), dict()
+for split in ['val', 'test']:
+    textvl_ocr_line_anno_list[split], textvl_ocr_line_anno_dict[split] = load_amazon_anno_textvl_ocr_line(split, format="both")
 
 
 def load_samples_textvqa(textvqa_sample_split, textvqa_prompt_vis_subdir, format="dict"):
@@ -116,10 +135,40 @@ def get_sample_textvqa(split, index, *subdirs):
             ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
             all_version_ocr_input_list.append(ocr_input)
 
+        # Amazon Line-Separate Annotation
+        line_ocr_input = []
+        for item in textvl_ocr_line_anno_dict[split][image_id]['TextDetections']:
+            if item['Type'] == 'LINE':
+                word = item['DetectedText']
+                conf = item['Confidence']
+                id = item['Id']
+                if conf > LINE_FILTER_THRESHOLD:
+                    line_ocr_input.append(word)
+        line_ocr_amazon_input = '\n'.join(line_ocr_input)
+        all_version_ocr_input_list.append(line_ocr_amazon_input)
+
         image_split = 'trainval' if split == 'val' else 'test'
         image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
+        # Draw OCR Polygons
+        image = Image.open(str(image_input))
+        w, h = image.size
+        draw_platte = ImageDraw.Draw(image, "RGBA") 
+        for item in textvl_ocr_line_anno_dict[split][image_id]['TextDetections']:
+            if item['Type'] == 'LINE':
+                word = item['DetectedText']
+                conf = item['Confidence']
+                bbx = item['Geometry']['BoundingBox']
+                plg = item['Geometry']['Polygon']
+                id = item['Id']
+                polygons_xy = []
+                for poly_pt in plg:
+                    poly_pt_x = poly_pt['X'] * w
+                    poly_pt_y = poly_pt['Y'] * h
+                    polygons_xy.append((poly_pt_x, poly_pt_y))
+                if conf > LINE_FILTER_THRESHOLD:
+                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 200), outline=(65, 18, 232), width=2) 
     
-    return [str(image_input),*all_version_ocr_input_list, question_input, answer_output_gt, *answer_output_pred_list]
+    return [image, *all_version_ocr_input_list, question_input, answer_output_gt, *answer_output_pred_list]
 
 def get_sample_textcaps(split, index, *subdirs):
 
@@ -144,10 +193,41 @@ def get_sample_textcaps(split, index, *subdirs):
             ocr_input = '\t\t\t'.join(textvl_ocr_data_dict[image_id]['ocr_tokens'])
             all_version_ocr_input_list.append(ocr_input)
 
+        # Amazon Line-Separate Annotation
+        line_ocr_input = []
+        for item in textvl_ocr_line_anno_dict[split][image_id]['TextDetections']:
+            if item['Type'] == 'LINE':
+                word = item['DetectedText']
+                conf = item['Confidence']
+                id = item['Id']
+                if conf > LINE_FILTER_THRESHOLD:
+                    line_ocr_input.append(word)
+        line_ocr_amazon_input = '\n'.join(line_ocr_input)
+        all_version_ocr_input_list.append(line_ocr_amazon_input)
+
         image_split = 'trainval' if split == 'val' else 'test'
         image_input = Path(TEXTVL_IMAGE_ROOT).resolve()/image_split/f"{image_id}.jpg"
 
-    return [str(image_input), *all_version_ocr_input_list, caption_output_gt, *caption_output_pred_list]
+        # Draw OCR Polygons
+        image = Image.open(str(image_input))
+        w, h = image.size
+        draw_platte = ImageDraw.Draw(image, "RGBA") 
+        for item in textvl_ocr_line_anno_dict[split][image_id]['TextDetections']:
+            if item['Type'] == 'LINE':
+                word = item['DetectedText']
+                conf = item['Confidence']
+                bbx = item['Geometry']['BoundingBox']
+                plg = item['Geometry']['Polygon']
+                id = item['Id']
+                polygons_xy = []
+                for poly_pt in plg:
+                    poly_pt_x = poly_pt['X'] * w
+                    poly_pt_y = poly_pt['Y'] * h
+                    polygons_xy.append((poly_pt_x, poly_pt_y))
+                if conf > LINE_FILTER_THRESHOLD:
+                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 230), outline=(65, 18, 232), width=2) 
+    
+    return [image, *all_version_ocr_input_list, caption_output_gt, *caption_output_pred_list]
 
 def random_select_textvqa(split, *subdirs):
 

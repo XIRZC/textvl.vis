@@ -9,6 +9,7 @@ TEXTVL_IMAGE_ROOT = f"{VIS_ROOT}/TextVL/Images"
 TEXTVQA_ANNOTATION_ROOT = f"{VIS_ROOT}/TextVL/Annotations/VQA"
 TEXTCAPS_ANNOTATION_ROOT = f"{VIS_ROOT}/TextVL/Annotations/IC"
 TEXTVL_OCR_ANNOTATION_ROOT = f"{VIS_ROOT}/TextVL/Annotations/OCR"
+LINE_FILTER_THRESHOLD = 0.0
 TEXTVL_OCR_VERSION_DICT = {
     "Rosetta": "Rosetta_OCR_v0.2",
     "Microsoft": "Microsoft_OCR_v1.0",

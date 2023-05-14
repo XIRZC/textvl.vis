@@ -50,6 +50,7 @@ def textvqa_tab_context():
                     textvqa_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
                     textvqa_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
                     textvqa_amazon_ocr_input = gr.Textbox(label='Amazon OCR Texts')
+                    textvqa_amazon_lined_ocr_input = gr.Textbox(label='Amazon Line-Separate OCR Texts')
                 textvqa_image_input = gr.Image(label='Image')
 
             with gr.Column():
@@ -67,7 +68,7 @@ def textvqa_tab_context():
                                        inputs=[textvqa_split_radio, \
                                          *textvqa_template_contrasts_list], \
                                        outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
-                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, \
+                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, textvqa_amazon_lined_ocr_input, \
                                          textvqa_question_input, textvqa_answer_output_gt, \
                                          *textvqa_prediction_contrasts_list, \
                                          textvqa_sample_index_slider])
@@ -76,6 +77,6 @@ def textvqa_tab_context():
                                        inputs=[textvqa_split_radio, textvqa_sample_index_slider, \
                                         *textvqa_template_contrasts_list], \
                                        outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
-                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, \
+                                        textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, textvqa_amazon_lined_ocr_input, \
                                          textvqa_question_input, textvqa_answer_output_gt, \
                                          *textvqa_prediction_contrasts_list])
