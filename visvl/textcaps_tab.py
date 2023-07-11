@@ -38,13 +38,14 @@ def textcaps_tab_context():
             with gr.Row():
                 textcaps_split_radio = gr.Radio(label='Split', choices=['val', 'test'], value='val')
                 textcaps_random_select_button = gr.Button(value="Random Select", variant="primary")
-            textcaps_sample_index_slider = gr.Slider(label='Index', minimum=1, maximum=3289, step=1)
+            textcaps_sample_index_slider = gr.Slider(label='Index', minimum=1, maximum=16445, step=1)
 
         with gr.Row():
 
             with gr.Column():
                 with gr.Box(elem_id=f"textcaps_anno_box"):
                     textcaps_caption_output_gt = gr.Textbox(label='5 GroundTruth Captions')
+                    textvqa_coimage_sample_ids = gr.Textbox(label='Corresponding TextVQA Samples IDs with the same image')
                 with gr.Box(elem_id=f"textcaps_ocr_box"):
                     textcaps_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
                     textcaps_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
@@ -66,7 +67,7 @@ def textcaps_tab_context():
                                        inputs=[textcaps_split_radio, *textcaps_template_contrasts_list], \
                                        outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
                                             textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, textcaps_amazon_lined_ocr_input, \
-                                           textcaps_caption_output_gt, *textcaps_prediction_contrasts_list,\
+                                           textcaps_caption_output_gt, textvqa_coimage_sample_ids, *textcaps_prediction_contrasts_list,\
                                             textcaps_sample_index_slider])
 
     textcaps_sample_index_slider.change(get_sample_textcaps, \
@@ -74,5 +75,5 @@ def textcaps_tab_context():
                                         *textcaps_template_contrasts_list], \
                                        outputs=[textcaps_image_input, textcaps_rosetta_ocr_input, \
                                             textcaps_microsoft_ocr_input, textcaps_amazon_ocr_input, textcaps_amazon_lined_ocr_input, \
-                                           textcaps_caption_output_gt, \
+                                           textcaps_caption_output_gt, textvqa_coimage_sample_ids, \
                                            *textcaps_prediction_contrasts_list])

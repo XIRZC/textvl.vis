@@ -33,7 +33,7 @@ def load_anno_textvl_ocr(split, format="list", version='Rosetta'):
 
 def load_amazon_anno_textvl_ocr_line(split, format="list"):
     
-    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_Amazon_OCR_v2.0_{split}.json"
+    textvl_ocr_file_path = Path(TEXTVL_OCR_ANNOTATION_ROOT).resolve()/f"TextVQA_Amazon_OCR_v1.1_{split}.json"
 
     textvl_ocr_data = json.load(textvl_ocr_file_path.open())['data']
 
@@ -124,6 +124,11 @@ def get_sample_textvqa(split, index, *subdirs):
 
         image_id = question_anno_data['image_id']
         question_input = question_anno_data['question']
+        textcaps_coimage_sample_ids = []
+        for i, item in enumerate(textcaps_anno_list[split]):
+            if item['image_id'] == image_id:
+                textcaps_coimage_sample_ids.append(str(i))
+        textcaps_coimage_sample_ids = ','.join(textcaps_coimage_sample_ids)
         if split == 'val':
             answer_output_gt = '\t\t\t'.join([f""+answer for i, answer in enumerate(question_anno_data['answers'])])
         else:
@@ -166,9 +171,10 @@ def get_sample_textvqa(split, index, *subdirs):
                     poly_pt_y = poly_pt['Y'] * h
                     polygons_xy.append((poly_pt_x, poly_pt_y))
                 if conf > LINE_FILTER_THRESHOLD:
-                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 200), outline=(65, 18, 232), width=2) 
+                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 50), outline=(65, 18, 232), width=2) 
+                    # draw_platte.polygon(polygons_xy, outline=(65, 18, 232, 50), width=2) 
     
-    return [image, *all_version_ocr_input_list, question_input, answer_output_gt, *answer_output_pred_list]
+    return [image, *all_version_ocr_input_list, question_input, answer_output_gt, textcaps_coimage_sample_ids, *answer_output_pred_list]
 
 def get_sample_textcaps(split, index, *subdirs):
 
@@ -181,6 +187,11 @@ def get_sample_textcaps(split, index, *subdirs):
 
         sample_data = textcaps_samples_data_dict[image_id]
         caption_output_pred_list.append(sample_data['caption'])
+        textvqa_coimage_sample_ids = []
+        for i, item in enumerate(textvqa_anno_list[split]):
+            if item['image_id'] == image_id:
+                textvqa_coimage_sample_ids.append(str(i))
+        textvqa_coimage_sample_ids = ','.join(textvqa_coimage_sample_ids)
 
         if split == 'val':
             caption_output_gt = '\n'.join([f""+caption for i, caption in enumerate(caption_anno_data['reference_strs']) ])
@@ -225,9 +236,10 @@ def get_sample_textcaps(split, index, *subdirs):
                     poly_pt_y = poly_pt['Y'] * h
                     polygons_xy.append((poly_pt_x, poly_pt_y))
                 if conf > LINE_FILTER_THRESHOLD:
-                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 230), outline=(65, 18, 232), width=2) 
+                    draw_platte.polygon(polygons_xy, fill=(160, 119, 246, 50), outline=(65, 18, 232), width=2) 
+                    # draw_platte.polygon(polygons_xy, outline=(65, 18, 232, 50), width=1) 
     
-    return [image, *all_version_ocr_input_list, caption_output_gt, *caption_output_pred_list]
+    return [image, *all_version_ocr_input_list, caption_output_gt, textvqa_coimage_sample_ids, *caption_output_pred_list]
 
 def random_select_textvqa(split, *subdirs):
 

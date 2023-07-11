@@ -46,6 +46,7 @@ def textvqa_tab_context():
                 with gr.Box(elem_id=f"textvqa_anno_box"):
                     textvqa_question_input = gr.Textbox(label='Question')
                     textvqa_answer_output_gt = gr.Textbox(label='10 GroundTruth Answers')
+                    textcaps_coimage_sample_ids = gr.Textbox(label='Corresponding TextCaps Samples IDs with the same image')
                 with gr.Box(elem_id=f"textvqa_ocr_box"):
                     textvqa_rosetta_ocr_input = gr.Textbox(label='Rosetta OCR Texts')
                     textvqa_microsoft_ocr_input = gr.Textbox(label='Microsoft OCR Texts')
@@ -69,7 +70,7 @@ def textvqa_tab_context():
                                          *textvqa_template_contrasts_list], \
                                        outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
                                         textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, textvqa_amazon_lined_ocr_input, \
-                                         textvqa_question_input, textvqa_answer_output_gt, \
+                                         textvqa_question_input, textvqa_answer_output_gt, textcaps_coimage_sample_ids, \
                                          *textvqa_prediction_contrasts_list, \
                                          textvqa_sample_index_slider])
 
@@ -78,5 +79,5 @@ def textvqa_tab_context():
                                         *textvqa_template_contrasts_list], \
                                        outputs=[textvqa_image_input, textvqa_rosetta_ocr_input, \
                                         textvqa_microsoft_ocr_input, textvqa_amazon_ocr_input, textvqa_amazon_lined_ocr_input, \
-                                         textvqa_question_input, textvqa_answer_output_gt, \
+                                         textvqa_question_input, textvqa_answer_output_gt, textcaps_coimage_sample_ids, \
                                          *textvqa_prediction_contrasts_list])

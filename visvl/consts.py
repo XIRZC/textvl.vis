@@ -13,7 +13,7 @@ LINE_FILTER_THRESHOLD = 0.0
 TEXTVL_OCR_VERSION_DICT = {
     "Rosetta": "Rosetta_OCR_v0.2",
     "Microsoft": "Microsoft_OCR_v1.0",
-    "Amazon": "Amazon_OCR_v1.0",
+    "Amazon": "Amazon_OCR_v2.0",
 }
 CSS_FORMAT = """
 #textvqa_anno_box {background-color: rgba(37, 190, 45, 0.3)}
